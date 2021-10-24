@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="PatientSet" EntityType="Model1.Store.PatientSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ClinicSet" EntityType="Model1.Store.ClinicSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AppointmentSet" EntityType="Model1.Store.AppointmentSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PatientAppointment" Association="Model1.Store.PatientAppointment">
+      <End Role="Patient" EntitySet="PatientSet" />
+      <End Role="Appointment" EntitySet="AppointmentSet" />
+    </AssociationSet>
+    <AssociationSet Name="ClinicAppointment" Association="Model1.Store.ClinicAppointment">
+      <End Role="Clinic" EntitySet="ClinicSet" />
+      <End Role="Appointment" EntitySet="AppointmentSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="PatientSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="f_name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="l_name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="phone" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClinicSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="phone" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AppointmentSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="datetime" Type="datetime" Nullable="false" />
+    <Property Name="PatientId" Type="int" Nullable="false" />
+    <Property Name="ClinicId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="PatientAppointment">
+    <End Role="Patient" Type="Model1.Store.PatientSet" Multiplicity="1" />
+    <End Role="Appointment" Type="Model1.Store.AppointmentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Patient">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Appointment">
+        <PropertyRef Name="PatientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClinicAppointment">
+    <End Role="Clinic" Type="Model1.Store.ClinicSet" Multiplicity="1" />
+    <End Role="Appointment" Type="Model1.Store.AppointmentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clinic">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Appointment">
+        <PropertyRef Name="ClinicId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PatientSet" EntityType="Model1.Patient" />
+          <EntitySet Name="ClinicSet" EntityType="Model1.Clinic" />
+          <EntitySet Name="AppointmentSet" EntityType="Model1.Appointment" />
+          <AssociationSet Name="PatientAppointment" Association="Model1.PatientAppointment">
+            <End Role="Patient" EntitySet="PatientSet" />
+            <End Role="Appointment" EntitySet="AppointmentSet" />
+          </AssociationSet>
+          <AssociationSet Name="ClinicAppointment" Association="Model1.ClinicAppointment">
+            <End Role="Clinic" EntitySet="ClinicSet" />
+            <End Role="Appointment" EntitySet="AppointmentSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="f_name" Type="String" Nullable="false" />
+          <Property Name="l_name" Type="String" Nullable="false" />
+          <Property Name="address" Type="String" Nullable="false" />
+          <Property Name="phone" Type="String" Nullable="false" />
+          <NavigationProperty Name="Appointment" Relationship="Model1.PatientAppointment" FromRole="Patient" ToRole="Appointment" />
+        </EntityType>
+        <EntityType Name="Clinic">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="address" Type="String" Nullable="false" />
+          <Property Name="phone" Type="String" Nullable="false" />
+          <NavigationProperty Name="Appointment" Relationship="Model1.ClinicAppointment" FromRole="Clinic" ToRole="Appointment" />
+        </EntityType>
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="datetime" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Patient" Relationship="Model1.PatientAppointment" FromRole="Appointment" ToRole="Patient" />
+          <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Clinic" Relationship="Model1.ClinicAppointment" FromRole="Appointment" ToRole="Clinic" />
+          <Property Name="ClinicId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="PatientAppointment">
+          <End Type="Model1.Patient" Role="Patient" Multiplicity="1" />
+          <End Type="Model1.Appointment" Role="Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ClinicAppointment">
+          <End Type="Model1.Clinic" Role="Clinic" Multiplicity="1" />
+          <End Type="Model1.Appointment" Role="Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clinic">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="ClinicId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="PatientSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Patient)">
+        <MappingFragment StoreEntitySet="PatientSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="f_name" ColumnName="f_name" />
+          <ScalarProperty Name="l_name" ColumnName="l_name" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClinicSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Clinic)">
+        <MappingFragment StoreEntitySet="ClinicSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AppointmentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Appointment)">
+        <MappingFragment StoreEntitySet="AppointmentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="datetime" ColumnName="datetime" />
+          <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+          <ScalarProperty Name="ClinicId" ColumnName="ClinicId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

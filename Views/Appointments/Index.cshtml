@@ -1,0 +1,56 @@
+﻿@model IEnumerable<_21S2_BZ_2.Models.Appointment>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts {
+    <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+    <script>$(document).ready(function () { $(".table").DataTable(); })</script>
+}
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" />
+
+<img src="~/Content/images.jpeg" />
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.datetime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient.f_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clinic.name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.datetime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Patient.f_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Clinic.name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

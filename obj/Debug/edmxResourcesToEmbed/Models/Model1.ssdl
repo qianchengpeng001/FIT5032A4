@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="PatientSet" EntityType="Model1.Store.PatientSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ClinicSet" EntityType="Model1.Store.ClinicSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AppointmentSet" EntityType="Model1.Store.AppointmentSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PatientAppointment" Association="Model1.Store.PatientAppointment">
+      <End Role="Patient" EntitySet="PatientSet" />
+      <End Role="Appointment" EntitySet="AppointmentSet" />
+    </AssociationSet>
+    <AssociationSet Name="ClinicAppointment" Association="Model1.Store.ClinicAppointment">
+      <End Role="Clinic" EntitySet="ClinicSet" />
+      <End Role="Appointment" EntitySet="AppointmentSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="PatientSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="f_name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="l_name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="phone" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClinicSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="phone" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AppointmentSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="datetime" Type="datetime" Nullable="false" />
+    <Property Name="PatientId" Type="int" Nullable="false" />
+    <Property Name="ClinicId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="PatientAppointment">
+    <End Role="Patient" Type="Model1.Store.PatientSet" Multiplicity="1" />
+    <End Role="Appointment" Type="Model1.Store.AppointmentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Patient">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Appointment">
+        <PropertyRef Name="PatientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClinicAppointment">
+    <End Role="Clinic" Type="Model1.Store.ClinicSet" Multiplicity="1" />
+    <End Role="Appointment" Type="Model1.Store.AppointmentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clinic">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Appointment">
+        <PropertyRef Name="ClinicId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
